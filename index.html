@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de iPhones</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        select {
+            width: 200px;
+            padding: 10px;
+            margin-right: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="phone-overlay-area"
+        style="width: 280px; height: 560px; background-repeat: no-repeat; position: relative;">
+        <img id='modelofdevice' class='modelofdevice' src="iphone\iphone11\device.png"
+            style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;" />
+        <img id="modelofbackground" class='modelofimage' src="iphone\iphone11\founder.png"
+            style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; cursor: pointer;" />
+
+        <img id="modelofimage" class='modelofimage' src="iphone\iphone11\founder.png"
+            style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; cursor: pointer;" />
+    </div>
+
+    <script>
+var imagemAlvo = document.getElementById('modelofdevice');
+var isDragging = false;
+var startX, startY;
+
+document.addEventListener('mousedown', function (event) {
+    // Inicia o arrastar quando o botão do mouse é pressionado
+    if (event.target === imagemAlvo) {
+        isDragging = true;
+        startX = event.clientX;
+        startY = event.clientY;
+    }
+});
+
+document.addEventListener('mousemove', function (event) {
+    if (isDragging) {
+        // Calcula a diferença entre as posições inicial e atual do mouse
+        var deltaX = event.clientX - startX;
+        var deltaY = event.clientY - startY;
+        var imagemodelo = document.getElementById('modelofimage');
+
+        // Move a imagem com base no movimento do mouse
+        imagemodelo.style.top = (imagemodelo.offsetTop + deltaY) + 'px';
+        imagemodelo.style.left = (imagemodelo.offsetLeft + deltaX) + 'px';
+
+        startX = event.clientX;
+        startY = event.clientY;
+    }
+});
+
+document.addEventListener('mouseup', function () {
+    // Interrompe o arrastar quando o botão do mouse é liberado
+    isDragging = false;
+});
+
+
+    </script>
+
+
+
+    <form action="/processar-imagem" method="post" enctype="multipart/form-data" id="formulario">
+        <label for="imagem">Escolher Modelo</label>
+        <input type="file" id="imagem" name="imagem" accept="image/*" onchange="mostrarImagem()">
+    </form>
+
+    <select id="opcoes">
+        <option value="iphone11">iPhone 11</option>
+        <option value="iphone11pro">iPhone 11 Pro</option>
+        <option value="iphone11promax">iPhone 11 Pro Max</option>
+        <option value="iphone12">iPhone 12</option>
+        <option value="iphone12mini">iPhone 12 Mini</option>
+        <option value="iphone12pro">iPhone 12 Pro</option>
+        <option value="iphone12promax">iPhone 12 Pro Max</option>
+        <option value="iphone13">iPhone 13</option>
+        <option value="iphone13pro">iPhone 13 Pro</option>
+        <option value="iphone13promax">iPhone 13 Pro Max</option>
+        <option value="iphone14">iPhone 14</option>
+        <option value="iphone14plus">iPhone 14 Plus</option>
+        <option value="iphone14pro">iPhone 14 Pro</option>
+        <option value="iphone14promax">iPhone 14 Pro Max</option>
+        <option value="iphone15">iPhone 15</option>
+        <option value="iphone15plus">iPhone 15 Plus</option>
+        <option value="iphone15promax">iPhone 15 Pro Max</option>
+        <option value="iphone4">iPhone 4</option>
+        <option value="iphone5">iPhone 5</option>
+        <option value="iphone6">iPhone 6</option>
+        <option value="iphone6antiimpacto">iPhone 6 Anti-impacto</option>
+        <option value="iphone6plus">iPhone 6 Plus</option>
+        <option value="iphone6plusantiimpacto">iPhone 6 Plus Anti-impacto</option>
+        <option value="iphone7plusantiimpacto">iPhone 7 Plus Anti-impacto</option>
+        <option value="iphone78antiimpacto">iPhone 7/8 Anti-impacto</option>
+        <option value="iphone8plus">iPhone 8 Plus</option>
+        <option value="iphonese">iPhone SE</option>
+        <option value="iphonese22">iPhone SE (2022)</option>
+        <option value="iphonex">iPhone X</option>
+        <option value="iphonexr">iPhone XR</option>
+        <option value="iphonexs">iPhone XS</option>
+        <option value="iphonexsmax">iPhone XS Max</option>
+    </select>
+
+
+
+    <script>
+
+        document.getElementById('opcoes').addEventListener('change', function () {
+            const modelofimage = document.getElementById('modelofdevice');
+            const selectedValue = this.value;
+            modelofimage.innerHTML = '';
+            const imagemUrl = `iphone/${selectedValue}/device.png`;
+            modelofimage.src = imagemUrl;
+            modelofimage.alt = `Imagem do iPhone ${selectedValue}`;
+        });
+
+
+        function mostrarImagem() {
+            var inputImagem = document.getElementById('imagem');
+            var modelofimage = document.getElementById('modelofimage');
+            if (inputImagem.files && inputImagem.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    modelofimage.src = e.target.result;
+                }
+                reader.readAsDataURL(inputImagem.files[0]);
+            }
+        }
+
+
+
+    </script>
+</body>
+<style>
+    .phone-overlay-area {
+        z-index: 0;
+    }
+
+    .modelofdevice {
+        z-index: 3;
+    }
+
+    .modelofbackground {
+        z-index: 5;
+    }
+
+    .modelofimage {
+        z-index: 1;
+    }
+</style>
+
+</html>
